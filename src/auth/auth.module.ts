@@ -8,6 +8,7 @@ import { AuthController } from './auth.controller';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { TokenModule } from 'src/token/token.module';
+import { jwtConstants } from './constants';
 
 @Module({
   imports: [
@@ -16,11 +17,12 @@ import { TokenModule } from 'src/token/token.module';
     PassportModule,
     TokenModule,
     JwtModule.register({
-      privateKey: process.env.JWT_SECRET_KEY,
+      secret: jwtConstants.secret,
       signOptions: { expiresIn: '60s' },
     }),
   ],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy],
+  exports: [JwtModule, AuthService]
 })
 export class AuthModule {}

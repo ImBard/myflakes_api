@@ -8,19 +8,18 @@ require('dotenv').config()
 @Injectable()
 export class AuthService {
     constructor(
-        private readonly userService: UsersService,
-        private readonly jwtService: JwtService,
-        @Inject(forwardRef(() => TokenService))
+        private userService: UsersService,
+        private jwtService: JwtService,
         private tokenService: TokenService
     ) { }
 
     async login(user: UsersEntity) {
-        const payload = { sub: user.idUser, email: user.email }
+        const payload = { email: user.email, sub: user.idUser }
         const token = this.jwtService.sign(payload) // problema esta aqui!!!
         this.tokenService.save(token, user.email)
         return {
             token: token
-        }
+        };
     }
 
     async validateUser(email: string, password: string) {

@@ -27,18 +27,23 @@ export class UsersService {
             throw new NotFoundException(error.message);
         }
     }
+
+    async findOne(email: string): Promise<UsersEntity | undefined> {
+        return this.userRepository.findOne({ email: email });
+    }
+
     async store(data: CreateUserDto) {
         const user = this.userRepository.create(data);
         return await this.userRepository.save(user);
     }
-    
+
     async update(id: string, data: UpdateUserDto) {
         const user = await this.findOneOrFail({ idUser: id });
         this.userRepository.merge(user, data)
         return await this.userRepository.save(user)
     }
     async destroy(id: string) {
-        await this.userRepository.findOneOrFail({idUser: id});
-        this.userRepository.softDelete({idUser: id})
+        await this.userRepository.findOneOrFail({ idUser: id });
+        this.userRepository.softDelete({ idUser: id })
     }
 }
