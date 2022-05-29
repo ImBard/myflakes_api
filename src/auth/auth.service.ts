@@ -15,7 +15,7 @@ export class AuthService {
 
     async login(user: UsersEntity) {
         const payload = { email: user.email, sub: user.idUser }
-        const token = this.jwtService.sign(payload) // problema esta aqui!!!
+        const token = this.jwtService.sign(payload) // here!!!
         this.tokenService.save(token, user.email)
         return {
             token: token
