@@ -4,6 +4,7 @@ import { UsersService } from 'src/app/users/users.service';
 import { compareSync } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { TokenService } from 'src/token/token.service';
+import { jwtConstants } from './constants';
 require('dotenv').config()
 @Injectable()
 export class AuthService {
@@ -15,7 +16,7 @@ export class AuthService {
 
     async login(user: UsersEntity) {
         const payload = { email: user.email, sub: user.idUser }
-        const token = this.jwtService.sign(payload) // here!!!
+        const token = this.jwtService.sign(payload , {secret: jwtConstants.secret}) // here!!!
         this.tokenService.save(token, user.email)
         return {
             token: token
