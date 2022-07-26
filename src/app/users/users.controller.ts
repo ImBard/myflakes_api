@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseUUIDPipe, Post, Put, SetMetadata, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateUserDto } from './dto/create-user.dto';
+import { newPostDto } from './dto/newPost.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
 
@@ -14,10 +15,15 @@ export class UsersController {
         return await this.userService.findAll();
     }
     
-    @Post()
-    
+    @Post()  
     async store(@Body() body: CreateUserDto) {
         return await this.userService.store(body);
+    }
+
+    @Post('post')
+    @UseGuards(AuthGuard('jwt'))
+    async newPost(@Body() body: newPostDto) {
+        return "teste"
     }
     
     @Get(':id')
@@ -38,4 +44,5 @@ export class UsersController {
     async destroy(@Param('id', new ParseUUIDPipe()) id: string) {
         await this.userService.destroy(id);
     }
+
 }
